@@ -10,16 +10,19 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         catch (Exception ex)
         {
             // Log the exception type and message
-            logger.LogError($"{ex.GetType().ToString()}: {ex.Message}");
+            logger.LogError("{S}: {ExMessage}", ex.GetType().ToString(), ex.Message);
 
             if (ex.InnerException is not null)
             {
                 // Log the inner exception type and message
-                logger.LogError($"{ex.InnerException.GetType().ToString()}: {ex.InnerException.Message}");
+                logger.LogError("{S}: {InnerExceptionMessage}", ex.InnerException.GetType().ToString(), ex.InnerException.Message);
             }
 
             httpContext.Response.StatusCode = 500; //Internal Server Error
-            await httpContext.Response.WriteAsJsonAsync(new { Message = ex.Message, Type = ex.GetType().ToString() });
+            await httpContext.Response.WriteAsJsonAsync(
+                new { Message = ex.Message, 
+                    Type = ex.GetType().ToString() 
+                });
         }
 
     }

@@ -1,6 +1,6 @@
 ﻿namespace eCommerce.Core.DTO;
 
-public record AuthenticationReponse(
+public record AuthenticationResponse(
     Guid UserId,
     string? Email,
     string? PersonName,
